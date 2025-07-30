@@ -1,0 +1,530 @@
+/* TFT Shop UI Styles - Vietnamese Enhanced */
+
+/* === ROOT CONTAINER === */
+.shop-container {
+    width: 100%;
+    height: 280px;
+    background-color: rgba(15, 15, 25, 0.98);
+    border-top-width: 4px;
+    border-color: rgb(120, 180, 255);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+    flex-direction: column;
+
+}
+
+/* === PLAYER INFO BAR === */
+.player-info-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 55px;
+    margin-bottom: 15px;
+    padding: 0 20px;
+    background-color: rgba(45, 45, 70, 0.95);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: rgba(120, 180, 255, 0.4);
+
+}
+
+.player-stat {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: rgba(60, 60, 90, 0.8);
+    margin: 0 4px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.15);
+    justify-content: center;
+}
+
+.player-stat-label {
+    color: rgb(220, 220, 240);
+    font-size: 14px;
+    margin-right: 8px;
+    -unity-font-style: bold;
+}
+
+.player-stat-value {
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.gold-value {
+    color: rgb(255, 220, 50);
+}
+
+.health-value {
+    color: rgb(255, 120, 120);
+}
+
+.level-value {
+    color: rgb(120, 255, 120);
+}
+
+.interest-value {
+    color: rgb(150, 255, 200);
+}
+
+.streak-value {
+    color: rgb(255, 150, 100);
+}
+
+/* === SHOP CONTROLS === */
+.shop-controls {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 65px;
+    margin-bottom: 15px;
+}
+
+.shop-left-controls {
+    flex-direction: row;
+    align-items: center;
+}
+
+.shop-right-controls {
+    flex-direction: row;
+    align-items: center;
+}
+
+.shop-button {
+    height: 48px;
+    padding: 12px 24px;
+    background-color: rgb(70, 90, 130);
+    border-color: rgb(120, 160, 255);
+    border-width: 3px;
+    border-radius: 12px;
+    color: white;
+    font-size: 16px;
+    -unity-font-style: bold;
+    margin: 0 8px;
+}
+
+.shop-button:hover {
+    border-color: rgb(140, 180, 255);
+}
+
+.shop-button:active {
+    border-color: rgb(100, 140, 200);
+}
+
+.shop-button:disabled {
+    border-color: rgb(80, 80, 80);
+    color: rgb(120, 120, 120);
+}
+
+.refresh-button {
+    border-color: rgb(120, 200, 80);
+}
+
+.refresh-button:hover {
+    border-color: rgb(140, 220, 100);
+}
+
+.lock-button {
+    border-color: rgb(200, 120, 80);
+}
+
+.lock-button:hover {
+    border-color: rgb(220, 140, 100);
+}
+
+.buy-exp-button {
+    border-color: rgb(180, 120, 220);
+}
+
+.buy-exp-button:hover {
+    border-color: rgb(200, 140, 240);
+}
+
+.all-in-button {
+    border-color: rgb(220, 120, 120);
+}
+
+.all-in-button:hover {
+    border-color: rgb(240, 140, 140);
+}
+
+.timer-container {
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(60, 60, 90, 0.9);
+    border-radius: 15px;
+    padding: 12px 20px;
+    border-width: 3px;
+    border-color: rgba(180, 180, 255, 0.6);
+}
+
+.timer-label {
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.timer-value {
+    color: rgb(255, 220, 120);
+    font-size: 26px;
+    -unity-font-style: bold;
+}
+
+/* === SHOP CHAMPIONS === */
+.shop-champions {
+    flex-direction: row;
+    justify-content: space-between;
+    height: 110px;
+    padding: 10px;
+}
+
+.champion-slot {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(70, 70, 90, 0.95);
+    border-width: 4px;
+    border-color: rgb(120, 120, 140);
+    border-radius: 15px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 5px;
+}
+
+.champion-slot:hover {
+    border-color: rgb(255, 230, 100);
+}
+
+.champion-slot:active {
+    background-color: rgba(50, 50, 70, 0.95);
+}
+
+.champion-slot--tier-1 {
+    border-color: rgb(160, 160, 170);
+}
+
+.champion-slot--tier-2 {
+    border-color: rgb(120, 255, 120);
+}
+
+.champion-slot--tier-3 {
+    border-color: rgb(120, 180, 255);
+}
+
+.champion-slot--tier-4 {
+    border-color: rgb(180, 120, 255);
+}
+
+.champion-slot--tier-5 {
+    border-color: rgb(255, 230, 100);
+}
+
+.champion-icon {
+    width: 75px;
+    height: 75px;
+    background-color: rgba(50, 50, 70, 0.9);
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.champion-cost {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background-color: rgba(0, 0, 0, 0.95);
+    color: rgb(255, 230, 100);
+    font-size: 12px;
+    -unity-font-style: bold;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: rgba(255, 230, 100, 0.6);
+}
+
+.champion-name {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background-color: rgba(0, 0, 0, 0.95);
+    color: white;
+    font-size: 10px;
+    -unity-font-style: bold;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+/* === EXPERIENCE BAR === */
+.exp-container {
+    margin-top: 10px;
+    height: 30px;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(50, 50, 80, 0.9);
+    border-radius: 12px;
+    padding: 0 15px;
+    border-width: 2px;
+    border-color: rgba(120, 180, 255, 0.4);
+
+}
+
+.exp-bar-background {
+    flex-grow: 1;
+    height: 16px;
+    background-color: rgba(60, 60, 60, 0.9);
+    border-radius: 8px;
+    margin: 0 15px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.exp-bar-fill {
+    height: 100%;
+    background-color: rgb(120, 220, 255);
+    border-radius: 8px;
+    width: 0%;
+}
+
+.exp-label {
+    color: rgb(220, 220, 240);
+    font-size: 15px;
+    -unity-font-style: bold;
+}
+
+/* === ANIMATIONS === */
+/* Transitions and animations are not supported in Unity USS */
+
+/* === RESPONSIVE === */
+@media screen and (max-width: 1600px) {
+    .shop-container {
+        height: 260px;
+        padding: 18px;
+    }
+    
+    .champion-slot {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .champion-icon {
+        width: 68px;
+        height: 68px;
+    }
+    
+    .shop-button {
+        height: 44px;
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .shop-container {
+        height: 240px;
+        padding: 15px;
+    }
+    
+    .champion-slot {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .champion-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .shop-button {
+        height: 40px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .player-stat {
+        padding: 6px 10px;
+        margin: 0 2px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .shop-container {
+        height: 200px;
+        padding: 12px;
+    }
+    
+    .champion-slot {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .champion-icon {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .shop-button {
+        height: 36px;
+        padding: 6px 12px;
+        font-size: 12px;
+        margin: 0 4px;
+    }
+    
+    .player-stat {
+        padding: 4px 8px;
+        margin: 0 1px;
+    }
+    
+    .player-stat-label {
+        font-size: 12px;
+    }
+    
+    .player-stat-value {
+        font-size: 14px;
+    }
+}
+
+/* === UTILITIES === */
+.hidden {
+    display: none;
+}
+
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.highlight {
+    border-color: rgb(255, 230, 100);
+    background-color: rgba(255, 230, 100, 0.3);
+}
+
+.pulse {
+    /* Pulse animation not supported in Unity USS */
+}
+
+/* Keyframes not supported in Unity USS */
+
+.glow-gold {
+    border-color: rgb(255, 230, 100);
+}
+
+.glow-blue {
+    border-color: rgb(120, 180, 255);
+}
+
+.glow-purple {
+    border-color: rgb(180, 120, 255);
+}
+
+/* === ADDITIONAL STYLES FOR 1920x1080 === */
+.shop-container--fullhd {
+    height: 320px;
+    padding: 25px;
+}
+
+.player-info-bar--fullhd {
+    height: 65px;
+    padding: 0 25px;
+    margin-bottom: 20px;
+}
+
+.player-stat--fullhd {
+    padding: 10px 15px;
+    margin: 0 6px;
+}
+
+.player-stat-label--fullhd {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.player-stat-value--fullhd {
+    font-size: 18px;
+}
+
+.shop-controls--fullhd {
+    height: 75px;
+    margin-bottom: 20px;
+}
+
+.shop-button--fullhd {
+    height: 55px;
+    padding: 15px 30px;
+    font-size: 18px;
+    margin: 0 10px;
+    border-radius: 15px;
+}
+
+.timer-container--fullhd {
+    padding: 15px 25px;
+    border-radius: 18px;
+}
+
+.timer-label--fullhd {
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.timer-value--fullhd {
+    font-size: 30px;
+}
+
+.shop-champions--fullhd {
+    height: 130px;
+    padding: 15px;
+}
+
+.champion-slot--fullhd {
+    width: 120px;
+    height: 120px;
+    border-radius: 18px;
+    margin: 8px;
+}
+
+.champion-icon--fullhd {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+}
+
+.champion-cost--fullhd {
+    font-size: 14px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    bottom: 6px;
+    right: 6px;
+}
+
+.champion-name--fullhd {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    bottom: 6px;
+    left: 6px;
+}
+
+.exp-container--fullhd {
+    height: 35px;
+    margin-top: 15px;
+    padding: 0 20px;
+}
+
+.exp-bar-background--fullhd {
+    height: 20px;
+    margin: 0 20px;
+    border-radius: 10px;
+}
+
+.exp-bar-fill--fullhd {
+    border-radius: 10px;
+}
+
+.exp-label--fullhd {
+    font-size: 17px;
+}
