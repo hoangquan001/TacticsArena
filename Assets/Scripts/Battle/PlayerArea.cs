@@ -160,8 +160,10 @@ namespace TacticsArena.Battle
                 }
             }
         }
+        Vector3 offset = new Vector3(0, 0.5f, 0);
         
-        Champion selectedChampion;
+       private  Champion selectedChampion;
+       private  Cell selectedCell;
 
         private void Update()
         {
@@ -169,31 +171,38 @@ namespace TacticsArena.Battle
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit))
+                if (Physics.Raycast(ray, out hit, 20f, LayerMask.GetMask("Champion")))
                 {
                     Champion champion = hit.transform.GetComponent<Champion>();
                     if (champion != null)
                     {
                         Debug.Log("Champion clicked: " + champion.name);
                         selectedChampion = champion;
+                        offset = champion.transform.position - hit.point;
+                        offset.y = 0f; // Giữ nguyên Y để không bị rơi xuống đất
                     }
                 }
             }
             if (Input.GetMouseButton(0) && selectedChampion != null)
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("PlayerArea")))
+                if (Physics.Raycast(ray, out RaycastHit hit, 20f, LayerMask.GetMask("PlayerArea")))
                 {
                     Vector3 newPosition = hit.point;
                     newPosition.y = selectedChampion.transform.position.y; // Giữ nguyên Y để không bị rơi xuống đất
-                    selectedChampion.transform.position = newPosition;
+                    selectedChampion.transform.position = newPosition + offset;
                 }
-                if (Physics.Raycast(ray, out RaycastHit hit2, Mathf.Infinity, LayerMask.GetMask("Hex")))
+                if (Physics.Raycast(ray, out RaycastHit hit2, 20f, LayerMask.GetMask("Cell")))
                 {
-                    Hex hex = hit2.transform.GetComponent<Hex>();
-                    if (hex != null && hex.IsEmpty())
+                    Cell cell = hit2.transform.GetComponent<Cell>();
+                    if(selectedCell!= null && selectedCell != cell)
                     {
-                        hex.Highlight(true);
+                        selectedCell.Highlight(false); // Tắt highlight ô cũ
+                    }
+                    if (cell != null)
+                    {
+                        cell.Highlight(true);
+                        selectedCell = cell;
                     }
                 }
 
@@ -202,14 +211,31 @@ namespace TacticsArena.Battle
             if (Input.GetMouseButtonUp(0) && selectedChampion != null)
             {
                 // Right click to remove champion
+
+                selectedCell.PlaceChampion(selectedChampion);
                 selectedChampion = null;
             }
 
         }
+
+        void SwapChampions(Champion champion1, Champion champion2)
+        {
+            if (champion1 == null || champion2 == null) return;
+
+            // Swap positions
+            Cell champion1Cell = champion1.CurCell;
+            Cell champion2Cell = champion2.CurCell;
+            champion1Cell.RemoveChampion();
+            champion2Cell.RemoveChampion();
+
+            champion1Cell.PlaceChampion(champion2);
+            champion2Cell.PlaceChampion(champion1);
+        }
+
         public void EndBattle()
         {
             List<Champion> boardChampions = GetBoardChampions();
-            
+
             foreach (Champion champion in boardChampions)
             {
                 if (champion != null)

@@ -31,6 +31,25 @@ namespace TacticsArena.Battle
         public float attackRange = 1.5f;
         public float moveSpeed = 2f;
 
+        private Cell currentCell; // Ô hiện tại của champion, sẽ được cập nhật khi đặt champion vào ô
+        public Cell  CurCell
+        {
+            get { return currentCell; }
+            set
+            {
+                currentCell = value;
+                if (currentCell != null)
+                {
+                    transform.position = currentCell.transform.position; // Đặt champion lên ô
+                }
+            }
+        }
+
+        public bool IsPlaced()
+        {
+            return currentCell != null;
+        }
+
         private Coroutine attackCoroutine;
         private Coroutine moveCoroutine;
 
