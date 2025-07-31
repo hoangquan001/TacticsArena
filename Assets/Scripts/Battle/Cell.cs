@@ -4,7 +4,7 @@ namespace TacticsArena.Battle
 {
     public class Cell : MonoBehaviour
     {
-        [Header("Hex Info")]
+        [Header("Slot Info")]
         public int x;
         public int y;
         // public Board board;
@@ -53,21 +53,12 @@ namespace TacticsArena.Battle
             }
             if (IsEmpty())
             {
-                var oldCell = newChampion.CurCell; // Cập nhật ô cũ của champion
-                oldCell?.RemoveChampion(); // Xóa champion khỏi ô cũ nếu có
                 champion = newChampion;
                 isOccupied = true;
-                newChampion.CurCell = this; // Cập nhật ô hiện tại của champion
                 UpdateVisual();
                 return true;
             }
 
-            this.champion.CurCell = newChampion.CurCell; // Cập nhật ô cũ của champion
-            newChampion.CurCell.PlaceChampion(oldChampion); // Đặt champion cũ vào ô mới
-            isOccupied = true;
-            newChampion.CurCell.UpdateVisual(); // Cập nhật ô cũ của champion
-            champion = newChampion;
-            newChampion.CurCell = this; // Cập nhật ô hiện tại của champion
             UpdateVisual();
             return true;
 

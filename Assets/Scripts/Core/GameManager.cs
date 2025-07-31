@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 using TacticsArena.Shop;
 using TacticsArena.Battle;
 
@@ -30,6 +31,9 @@ namespace TacticsArena.Core
         public ShopManager shopManager;
         public BattleManager battleManager;
         
+        // Events
+        public static event Action<GameState> OnStateChanged;
+        
         private List<Player> players = new List<Player>();
         
         private void Awake()
@@ -59,6 +63,9 @@ namespace TacticsArena.Core
         public void ChangeState(GameState newState)
         {
             currentState = newState;
+            
+            // Trigger event
+            OnStateChanged?.Invoke(newState);
             
             switch (newState)
             {

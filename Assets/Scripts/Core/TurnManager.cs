@@ -76,8 +76,13 @@ namespace TacticsArena.Core
         
         private bool IsBattleFinished()
         {
-            // Logic kiểm tra battle đã kết thúc chưa
-            // Ví dụ: tất cả champion của một bên đã chết
+            // Kiểm tra battle đã kết thúc chưa thông qua BattleManager
+            var battleManager = FindAnyObjectByType<TacticsArena.Battle.BattleManager>();
+            if (battleManager != null)
+            {
+                return battleManager.IsBattleFinished();
+            }
+            
             return false;
         }
     }

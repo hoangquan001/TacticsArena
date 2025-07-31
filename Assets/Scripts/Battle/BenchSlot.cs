@@ -2,42 +2,45 @@ using UnityEngine;
 
 namespace TacticsArena.Battle
 {
-    public class BenchSlot : Hex
+    public class BenchSlot : Cell
     {
         [Header("Slot Info")]
-        public int slotIndex;
         public Bench bench;
         
         [Header("Visual")]
         
         private bool isDragging = false;
-        private Camera mainCamera;
         
         protected override void Start()
         {
             base.Start();
-            mainCamera = Camera.main;
             UpdateVisual();
         }
         
         public void Initialize(int index, Bench parentBench)
         {
-            slotIndex = index;
+            x = index;
             bench = parentBench;
             UpdateVisual();
         }
         
-        private bool MoveChampionToBoard(Champion championToMove, Hex targetHex)
+        public new void Highlight(bool highlight)
         {
-            Board board = targetHex.board;
+            // Override highlight để có thể customize cho bench slot
+            base.Highlight(highlight);
+        }
+        
+        private bool MoveChampionToBoard(Champion championToMove, BoardSlot targetSlot)
+        {
+            Board board = targetSlot.board;
             if (board == null) return false;
             
             // Place champion on board
-            if (board.PlaceChampion(championToMove, targetHex.x, targetHex.y))
+            if (board.PlaceChampion(championToMove, targetSlot.x, targetSlot.y))
             {
                 // Remove from bench
                 RemoveChampion();
-                Debug.Log($"Moved {championToMove.championData.championName} from bench to board at ({targetHex.x}, {targetHex.y})");
+                Debug.Log($"Moved {championToMove.data.championName} from bench to board at ({targetSlot.x}, {targetSlot.y})");
                 return true;
             }
             
@@ -52,14 +55,14 @@ namespace TacticsArena.Battle
             if (targetIndex == -1) return false;
             
             // Swap champions
-            bench.SwapChampions(slotIndex, targetIndex);
-            Debug.Log($"Swapped champions between bench slots {slotIndex} and {targetIndex}");
+            bench.SwapChampions(x, targetIndex);
+            Debug.Log($"Swapped champions between bench slots {x} and {targetIndex}");
             return true;
         }
         
         private void OnEmptySlotClicked()
         {
-            Debug.Log($"Clicked empty bench slot {slotIndex}");
+            Debug.Log($"Clicked empty bench slot {x}");
             // Could be used for placing selected champion from shop
         }
         

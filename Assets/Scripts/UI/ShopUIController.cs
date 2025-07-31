@@ -31,27 +31,33 @@ namespace TacticsArena.UI
         private Label streakValue;
         private Label expLabelRight;
         private VisualElement expBarFill;
-        private Label timerLabel;
-        private Label timerValue;
         private Button refreshButton;
         private Button lockButton;
-        private Button buyExpButton;
-        private Button allInButton;
-        
+        private Button buyExpButton;        
         private List<VisualElement> championSlots = new List<VisualElement>();
         private List<ChampionData> currentShopData = new List<ChampionData>();
         
         private bool isLocked = false;
         
+        private void Awake()
+        {
+            SubscribeToEvents();
+
+        }
         private void Start()
         {
-            InitializeUI();
-            SubscribeToEvents();
             UpdateUI();
         }
-        
+
+
+        private void OnEnable()
+        {
+            InitializeUI();
+        }
+
         private void OnDestroy()
         {
+
             UnsubscribeFromEvents();
         }
         
@@ -82,15 +88,12 @@ namespace TacticsArena.UI
             expLabelRight = root.Q<Label>("exp-label-right");
             expBarFill = root.Q<VisualElement>("exp-bar-fill");
             
-            // Timer elements
-            timerLabel = root.Q<Label>("timer-label");
-            timerValue = root.Q<Label>("timer-value");
+
             
             // Button elements
             refreshButton = root.Q<Button>("refresh-button");
             lockButton = root.Q<Button>("lock-button");
             buyExpButton = root.Q<Button>("buy-exp-button");
-            allInButton = root.Q<Button>("all-in-button");
             
             // Champion slots
             for (int i = 1; i <= 5; i++)
@@ -107,9 +110,7 @@ namespace TacticsArena.UI
             // Setup button callbacks
             refreshButton?.RegisterCallback<ClickEvent>(OnRefreshClicked);
             lockButton?.RegisterCallback<ClickEvent>(OnLockClicked);
-            buyExpButton?.RegisterCallback<ClickEvent>(OnBuyExpClicked);
-            allInButton?.RegisterCallback<ClickEvent>(OnAllInClicked);
-            
+            buyExpButton?.RegisterCallback<ClickEvent>(OnBuyExpClicked);            
             Debug.Log("Shop UI initialized successfully!");
         }
         
@@ -130,7 +131,6 @@ namespace TacticsArena.UI
         
         private void Update()
         {
-            UpdateTimerDisplay();
             UpdatePlayerInfo();
         }
         
@@ -176,28 +176,11 @@ namespace TacticsArena.UI
             }
         }
         
-        private void UpdateTimerDisplay()
-        {
-            if (gameManager == null) return;
-            
-            // Convert state to Vietnamese
-            string stateText = gameManager.currentState switch
-            {
-                GameState.Preparation => "Chuẩn bị",
-                GameState.Battle => "Chiến đấu",
-                GameState.PostBattle => "Kết thúc",
-                _ => "Đang chờ"
-            };
-            
-            timerLabel.text = stateText;
-
-            // In a real implementation, you'd get the actual timer value
-            timerValue.text = "30";
-        }
+       
         
         private void UpdateShopDisplay(List<ChampionData> shopChampions)
         {
-            currentShopData = shopChampions ?? new List<ChampionData>();
+            currentShopData = new List<ChampionData>(shopChampions);
             
             for (int i = 0; i < championSlots.Count; i++)
             {
@@ -214,19 +197,26 @@ namespace TacticsArena.UI
                 }
             }
         }
-        
+
         private void UpdateChampionSlot(VisualElement slot, ChampionData championData, int slotIndex)
         {
-            if (slot == null || championData == null) return;
-            
+            if (slot != null)
+            {
+                slot.visible = championData != null;
+            }
+            if (slot == null || championData == null)
+            {
+                return;
+            }
+
             // Update champion name
-            var nameLabel = slot.Q<Label>($"champion-name-{slotIndex + 1}");
+                var nameLabel = slot.Q<Label>($"champion-name-{slotIndex + 1}");
             nameLabel.text = championData.championName;
-            
+
             // Update cost with gold emoji
             var costLabel = slot.Q<Label>($"champion-cost-{slotIndex + 1}");
             costLabel.text = $"{championData.cost}💰";
-            
+
             // Update tier styling
             slot.RemoveFromClassList("champion-slot--tier-1");
             slot.RemoveFromClassList("champion-slot--tier-2");
@@ -234,18 +224,18 @@ namespace TacticsArena.UI
             slot.RemoveFromClassList("champion-slot--tier-4");
             slot.RemoveFromClassList("champion-slot--tier-5");
             slot.AddToClassList($"champion-slot--tier-{championData.tier}");
-            
+
             // Update champion icon
             var iconElement = slot.Q<VisualElement>($"champion-icon-{slotIndex + 1}");
             if (iconElement != null && championData.championIcon != null)
             {
                 iconElement.style.backgroundImage = new StyleBackground(championData.championIcon);
             }
-            
+
             // Enable/disable based on gold
             bool canAfford = player != null && player.gold >= championData.cost;
             slot.SetEnabled(canAfford);
-            
+
             if (!canAfford)
             {
                 slot.AddToClassList("disabled");
@@ -254,6 +244,7 @@ namespace TacticsArena.UI
             {
                 slot.RemoveFromClassList("disabled");
             }
+            // Register click event for the slot
         }
         
         private void UpdateButtonStates()
@@ -289,7 +280,7 @@ namespace TacticsArena.UI
                     Debug.Log($"Đã mua {championData.championName}!");
                     
                     // Remove champion from current display
-                    currentShopData.RemoveAt(slotIndex);
+                    currentShopData[slotIndex] = null;
                     UpdateShopDisplay(currentShopData);
                     UpdatePlayerInfo();
                     UpdateButtonStates();
@@ -333,29 +324,7 @@ namespace TacticsArena.UI
             }
         }
         
-        private void OnAllInClicked(ClickEvent evt)
-        {
-            // Implement all-in functionality (spend all gold on refreshes)
-            if (player == null || shopManager == null) return;
-            
-            int refreshCount = 0;
-            while (player.gold >= 2 && refreshCount < 20) // Limit to prevent infinite loop
-            {
-                if (shopManager.RefreshShopWithCost(player))
-                {
-                    refreshCount++;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            
-            UpdatePlayerInfo();
-            UpdateButtonStates();
-            
-            Debug.Log($"All-in: Refreshed {refreshCount} times!");
-        }
+
         
         private void OnChampionPurchased(ChampionData championData)
         {

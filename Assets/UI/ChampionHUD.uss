@@ -1,0 +1,225 @@
+/* Champion HUD Styles */
+
+.champion-hud-container {
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+    padding: 4px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.champion-hud-container.team-player {
+    border-color: rgba(0, 150, 255, 0.8);
+}
+
+.champion-hud-container.team-enemy {
+    border-color: rgba(255, 50, 50, 0.8);
+}
+
+/* Champion Info */
+.champion-info {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.champion-name {
+    font-size: 12px;
+    color: white;
+    -unity-font-style: bold;
+    margin-right: 4px;
+}
+
+.level-indicator {
+    font-size: 10px;
+    color: #FFD700;
+    background-color: rgba(255, 215, 0, 0.2);
+    border-radius: 6px;
+    padding: 1px 4px;
+    margin-right: 4px;
+}
+
+.star-container {
+    flex-direction: row;
+}
+
+.star {
+    width: 8px;
+    height: 8px;
+    background-image: url('project://database/Assets/UI/Icons/star.png');
+    margin-right: 1px;
+}
+
+/* Health Bar */
+.health-bar-container {
+    width: 100px;
+    height: 8px;
+    background-color: rgba(80, 80, 80, 0.8);
+    border-radius: 4px;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+.health-bar-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    transition-property: width;
+    transition-duration: 0.3s;
+    border-radius: 4px;
+}
+
+.health-bar-fill.health-low {
+    background-color: #FF9800;
+}
+
+.health-bar-fill.health-critical {
+    background-color: #F44336;
+}
+
+/* Mana Bar */
+.mana-bar-container {
+    width: 100px;
+    height: 6px;
+    background-color: rgba(80, 80, 80, 0.8);
+    border-radius: 3px;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+.mana-bar-fill {
+    height: 100%;
+    background-color: #2196F3;
+    transition-property: width;
+    transition-duration: 0.3s;
+    border-radius: 3px;
+}
+
+/* Text Values */
+.health-text {
+    font-size: 10px;
+    color: white;
+    position: absolute;
+    align-self: center;
+    top: -1px;
+    -unity-text-align: middle-center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.mana-text {
+    font-size: 9px;
+    color: #B3E5FC;
+    position: absolute;
+    align-self: center;
+    top: -1px;
+    -unity-text-align: middle-center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Team-specific styling */
+.team-player .champion-name {
+    color: #81D4FA;
+}
+
+.team-enemy .champion-name {
+    color: #FFAB91;
+}
+
+.team-player .health-bar-fill {
+    background-color: #4CAF50;
+}
+
+.team-enemy .health-bar-fill {
+    background-color: #FF5722;
+}
+
+.team-player .mana-bar-fill {
+    background-color: #2196F3;
+}
+
+.team-enemy .mana-bar-fill {
+    background-color: #9C27B0;
+}
+
+/* Animation classes */
+.champion-hud-container.fade-in {
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+}
+
+.champion-hud-container.fade-out {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 0.3s;
+}
+
+/* Damage/Heal text effects */
+.damage-text {
+    position: absolute;
+    font-size: 14px;
+    color: #FF4444;
+    -unity-font-style: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.heal-text {
+    position: absolute;
+    font-size: 14px;
+    color: #44FF44;
+    -unity-font-style: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* Size variants */
+.champion-hud-container.size-small {
+    min-width: 80px;
+    padding: 2px;
+}
+
+.champion-hud-container.size-small .health-bar-container,
+.champion-hud-container.size-small .mana-bar-container {
+    width: 70px;
+}
+
+.champion-hud-container.size-small .champion-name {
+    font-size: 10px;
+}
+
+.champion-hud-container.size-large {
+    min-width: 150px;
+    padding: 6px;
+}
+
+.champion-hud-container.size-large .health-bar-container,
+.champion-hud-container.size-large .mana-bar-container {
+    width: 130px;
+}
+
+.champion-hud-container.size-large .champion-name {
+    font-size: 14px;
+}
+
+/* Status effects */
+.champion-hud-container.status-stunned {
+    border-color: #FFD700;
+}
+
+.champion-hud-container.status-poisoned {
+    border-color: #8BC34A;
+}
+
+.champion-hud-container.status-buffed {
+    border-color: #FF9800;
+}
+
+/* Hover effects (for UI interaction) */
+.champion-hud-container:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+    scale: 1.05;
+    transition-property: scale, background-color;
+    transition-duration: 0.2s;
+}

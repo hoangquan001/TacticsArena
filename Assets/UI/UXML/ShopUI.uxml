@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Styles/ShopUI.uss?fileID=7433441132597879392&amp;guid=1ae66d5846d1b0a48babac0ddbd218ec&amp;type=3#ShopUI" />
-    <engine:VisualElement name="shop-container" class="shop-container" style="width: auto; left: 278px; height: auto; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px;">
-        <engine:VisualElement name="player-info-bar" class="player-info-bar" style="opacity: 1; visibility: visible; display: none; overflow: visible; height: auto; margin-top: 0; margin-right: 0; margin-bottom: 10px; margin-left: 0;">
+    <engine:VisualElement name="shop-container" class="shop-container" style="width: auto; left: 278px; height: auto; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+        <engine:VisualElement name="player-info-bar" class="player-info-bar" style="opacity: 1; visibility: visible; display: flex; overflow: visible; height: auto; margin-top: 0; margin-right: 0; margin-bottom: 10px; margin-left: 0;">
             <engine:VisualElement name="VisualElement" class="player-stat" style="padding-top: 4px;">
                 <engine:Label text="❤️ Máu:" class="player-stat-label" />
                 <engine:Label name="health-value" text="100" enabled="true" class="player-stat-value health-value" />
@@ -27,7 +27,7 @@
                 <engine:Label name="streak-value" text="0" class="player-stat-value streak-value" />
             </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; height: auto; justify-content: space-between;">
+        <engine:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row; flex-wrap: wrap; height: auto; justify-content: space-between; width: 1298px;">
             <engine:VisualElement name="shop-controls" class="shop-controls" style="width: 243px; height: auto; flex-direction: column; justify-content: space-between; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-right: 10px; padding-left: 10px; align-items: flex-end;">
                 <engine:VisualElement name="exp-container" class="exp-container" style="width: 100%; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
                     <engine:Label name="exp-label-left" text="🎓 KN:" class="exp-label" />
@@ -39,28 +39,28 @@
                 <engine:Button name="buy-exp-button" text="🎓 Mua KN (4💰)" class="shop-button buy-exp-button" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%;" />
                 <engine:Button name="refresh-button" text="🔄 Làm mới (2💰)" class="shop-button refresh-button" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%;" />
             </engine:VisualElement>
-            <engine:VisualElement name="shop-champions" class="shop-champions" style="width: auto; height: auto; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
-                <engine:VisualElement name="champion-slot-1" class="champion-slot champion-slot--tier-1" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px;">
+            <engine:VisualElement name="shop-champions" class="shop-champions" style="width: 1025px; height: auto;">
+                <engine:VisualElement name="champion-slot-1" class="champion-slot champion-slot--tier-1" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
                     <engine:VisualElement name="champion-icon-1" class="champion-icon" style="width: 77px; height: 77px;" />
                     <engine:Label name="champion-name-1" text="Chiến Binh" class="champion-name" />
                     <engine:Label name="champion-cost-1" text="1💰" class="champion-cost" />
                 </engine:VisualElement>
-                <engine:VisualElement name="champion-slot-2" class="champion-slot champion-slot--tier-1" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px;">
+                <engine:VisualElement name="champion-slot-2" class="champion-slot champion-slot--tier-1" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
                     <engine:VisualElement name="champion-icon-2" class="champion-icon" />
                     <engine:Label name="champion-name-2" text="Cung Thủ" class="champion-name" />
                     <engine:Label name="champion-cost-2" text="1💰" class="champion-cost" />
                 </engine:VisualElement>
-                <engine:VisualElement name="champion-slot-3" class="champion-slot champion-slot--tier-2" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px;">
+                <engine:VisualElement name="champion-slot-3" class="champion-slot champion-slot--tier-2" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
                     <engine:VisualElement name="champion-icon-3" class="champion-icon" style="height: 75px;" />
                     <engine:Label name="champion-name-3" text="Hiệp Sĩ" class="champion-name" />
                     <engine:Label name="champion-cost-3" text="2💰" class="champion-cost" />
                 </engine:VisualElement>
-                <engine:VisualElement name="champion-slot-4" class="champion-slot champion-slot--tier-1" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px;">
+                <engine:VisualElement name="champion-slot-4" class="champion-slot champion-slot--tier-1" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px;">
                     <engine:VisualElement name="champion-icon-4" class="champion-icon" style="height: 75px;" />
                     <engine:Label name="champion-name-4" text="Pháp Sư" class="champion-name" />
                     <engine:Label name="champion-cost-4" text="1💰" class="champion-cost" />
                 </engine:VisualElement>
-                <engine:VisualElement name="champion-slot-5" class="champion-slot champion-slot--tier-3" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px;">
+                <engine:VisualElement name="champion-slot-5" class="champion-slot champion-slot--tier-3" style="width: 200px; height: 150px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 10px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
                     <engine:VisualElement name="champion-icon-5" class="champion-icon" />
                     <engine:Label name="champion-name-5" text="Thánh Kỵ Sĩ" class="champion-name" />
                     <engine:Label name="champion-cost-5" text="3💰" class="champion-cost" />

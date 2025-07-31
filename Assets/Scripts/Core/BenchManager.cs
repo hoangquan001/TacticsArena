@@ -11,9 +11,6 @@ namespace TacticsArena.Core
         public Bench playerBench;
         public ShopManager shopManager;
         
-        [Header("Champion Creation")]
-        public GameObject defaultChampionPrefab;
-        
         private void Start()
         {
             SubscribeToEvents();
@@ -54,38 +51,22 @@ namespace TacticsArena.Core
                 Debug.Log("Bench is full! Cannot add more champions.");
                 return;
             }
-            
+
+
             CreateAndAddChampionToBench(championData);
         }
         
         private void CreateAndAddChampionToBench(ChampionData championData)
         {
-            GameObject championObject;
-            
-            if (championData.championPrefab != null)
+            Champion champion = ChampionFactory.Instance.CreateChampion(new ChampionSpawnData
             {
-                // Use the specified prefab
-                championObject = Instantiate(championData.championPrefab);
-            }
-            else if (defaultChampionPrefab != null)
-            {
-                // Use default prefab
-                championObject = Instantiate(defaultChampionPrefab);
-            }
-            else
-            {
-                // Create basic champion GameObject
-                championObject = CreateBasicChampionObject(championData.championName);
-            }
-            
-            // Ensure champion component exists
-            Champion champion = championObject.GetComponent<Champion>();
-            if (champion == null)
-                champion = championObject.AddComponent<Champion>();
-            
-            // Set champion data
-            champion.championData = championData;
-            
+                championData = championData,
+                modelPrefab = championData.championPrefab,
+                spawnPosition = Vector3.zero,
+                level = 1,
+                stars = 1,
+                teamId = 0
+            });
             // Add to bench
             if (playerBench.AddChampion(champion))
             {
@@ -94,55 +75,9 @@ namespace TacticsArena.Core
             else
             {
                 Debug.LogWarning($"Failed to add {championData.championName} to bench");
-                Destroy(championObject);
             }
         }
         
-        private GameObject CreateBasicChampionObject(string championName)
-        {
-            GameObject championObject = new GameObject(championName);
-            
-            // Add visual representation
-            GameObject visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            visual.transform.SetParent(championObject.transform);
-            visual.transform.localPosition = Vector3.zero;
-            visual.transform.localScale = Vector3.one * 0.8f;
-            
-            // Add different colors for different champions
-            Renderer renderer = visual.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.material.color = GetRandomChampionColor();
-            }
-            
-            // Add collider for interactions
-            if (championObject.GetComponent<Collider>() == null)
-            {
-                BoxCollider collider = championObject.AddComponent<BoxCollider>();
-                collider.size = Vector3.one * 0.8f;
-            }
-            
-            return championObject;
-        }
-        
-        private Color GetRandomChampionColor()
-        {
-            Color[] colors = {
-                Color.red, Color.blue, Color.green, Color.yellow,
-                Color.magenta, Color.cyan, Color.white, new Color(1f, 0.5f, 0f) // orange
-            };
-            
-            return colors[Random.Range(0, colors.Length)];
-        }
-        
-        [ContextMenu("Test Add Random Champion")]
-        public void TestAddRandomChampion()
-        {
-            if (shopManager != null && shopManager.allChampions.Count > 0)
-            {
-                ChampionData randomChampion = shopManager.allChampions[Random.Range(0, shopManager.allChampions.Count)];
-                CreateAndAddChampionToBench(randomChampion);
-            }
-        }
+
     }
 }

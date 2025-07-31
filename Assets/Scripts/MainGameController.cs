@@ -20,9 +20,6 @@ namespace TacticsArena
         public SynergyManager synergyManager;
         // public BenchManager benchManager;
         
-        [Header("Boards")]
-        public Board playerBoard;
-        public Board enemyBoard;
         
         [Header("Players")]
         public Player mainPlayer;
@@ -30,11 +27,7 @@ namespace TacticsArena
         
         [Header("UI")]
         public GameUI gameUI;
-        
-        [Header("Prefabs")]
-        public GameObject hexPrefab;
-        public GameObject championPrefab;
-        
+
         private void Awake()
         {
             SetupGameSystems();
@@ -98,65 +91,21 @@ namespace TacticsArena
             SetupBoards();
             
             // Setup player
-            SetupPlayer();
             
             // Setup UI
             SetupUI();
-            
-            // Create sample champions for testing
-            CreateSampleChampions();
             
             Debug.Log("TacticsArena game initialized!");
         }
         
         private void SetupBoards()
         {
-            if (playerBoard == null)
-            {
-                GameObject playerBoardObject = new GameObject("PlayerBoard");
-                playerBoard = playerBoardObject.AddComponent<Board>();
-                playerBoard.hexPrefab = hexPrefab;
-            }
+
             
-            if (enemyBoard == null)
-            {
-                GameObject enemyBoardObject = new GameObject("EnemyBoard");
-                enemyBoard = enemyBoardObject.AddComponent<Board>();
-                enemyBoard.hexPrefab = hexPrefab;
-                
-                // Position enemy board
-                enemyBoardObject.transform.position = new Vector3(0, 0, 10);
-            }
         }
         
-        private void SetupPlayer()
-        {
-            if (mainPlayer == null)
-            {
-                GameObject playerObject = new GameObject("MainPlayer");
-                mainPlayer = playerObject.AddComponent<Player>();
-                mainPlayer.playerName = "Player 1";
-                mainPlayer.playerBoard = playerBoard;
-                mainPlayer.gold = 10; // Starting gold
-                
-                // Create bench for player
-                SetupPlayerBench(playerObject);
-            }
-        }
-        
-        private void SetupPlayerBench(GameObject playerObject)
-        {
-            // Create bench GameObject
-            GameObject benchObject = new GameObject("PlayerBench");
-            benchObject.transform.SetParent(playerObject.transform);
-            benchObject.transform.localPosition = new Vector3(0, 0, -5); // Position bench in front of player
-            
-            // Add a placeholder component for now
-            MonoBehaviour benchComponent = benchObject.AddComponent<MonoBehaviour>();
-            mainPlayer.playerBench = benchComponent; // Store reference as MonoBehaviour
-            
-            Debug.Log("Player bench setup completed (will be activated when Bench script compiles)");
-        }
+
+    
         
         private void SetupUI()
         {
@@ -164,15 +113,6 @@ namespace TacticsArena
             {
                 gameUI.SetPlayer(mainPlayer);
             }
-        }
-        
-        private void CreateSampleChampions()
-        {
-            // Tạo một số sample champion data cho testing
-            // Trong thực tế, các data này sẽ được load từ ScriptableObjects
-            
-            Debug.Log("Sample champions would be created here");
-            // TODO: Create actual champion data assets
         }
         
         [ContextMenu("Start Battle Test")]

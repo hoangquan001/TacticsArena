@@ -24,7 +24,7 @@ namespace TacticsArena.Champions
         Dragon,
         Beast
     }
-    
+
     [CreateAssetMenu(fileName = "New Champion Data", menuName = "TacticsArena/Champion Data")]
     public class ChampionData : ScriptableObject
     {
@@ -38,21 +38,20 @@ namespace TacticsArena.Champions
         [Header("Classes & Origins")]
         public List<ChampionClass> classes = new List<ChampionClass>();
         public List<ChampionOrigin> origins = new List<ChampionOrigin>();
-        
+
         [Header("Base Stats")]
-        public float baseHealth = 100f;
-        public float baseAttackDamage = 50f;
-        public float baseAttackSpeed = 1f;
-        public float baseArmor = 10f;
-        public float baseMagicResist = 10f;
-        public float baseMana = 100f;
-        public float maxMana = 100f;
         
+        public AttributeData baseAttr = new AttributeData();
+
         [Header("Ability")]
-        public string abilityName;
-        public string abilityDescription;
-        public float abilityDamage = 100f;
-        public float abilityCooldown = 3f;
+        public SkillData abilityData;
+
+        [Header("Animations")]
+        public AnimationClip idleAnimation;
+        public AnimationClip moveAnimation;
+        public AnimationClip attackAnimation;
+        public AnimationClip abilityAnimation;
+        public AnimationClip deathAnimation;
         
         public float GetStatAtLevel(float baseStat, int level)
         {

@@ -15,42 +15,25 @@ namespace TacticsArena.Battle
         public GameObject benchSlotPrefab;
         
         [Header("Visual")]
-        public Transform benchSlotsParent;
         
         private BenchSlot[] benchSlots;
         private List<Champion> championsOnBench = new List<Champion>();
-        
+
         private void Start()
         {
-            GenerateBenchSlots();
+            // GenerateBenchSlots();
+            Initialize();
         }
         
         [ContextMenu("Generate Bench")]
         private void GenerateBenchSlots()
         {
-            // Clear existing slots
-            if (benchSlotsParent != null)
-            {
-                foreach (Transform child in benchSlotsParent)
-                {
-                    DestroyImmediate(child.gameObject);
-                }
-            }
-            else
-            {
-                // Tạo parent nếu chưa có
-                GameObject benchParent = new GameObject("BenchSlots");
-                benchParent.transform.SetParent(transform);
-                benchSlotsParent = benchParent.transform;
-                benchParent.transform.localPosition = Vector3.zero;
-            }
             
             benchSlots = new BenchSlot[maxBenchSize];
-            
             for (int i = 0; i < maxBenchSize; i++)
             {
                 Vector3 position = GetSlotPosition(i);
-                GameObject slotObject = Instantiate(benchSlotPrefab, position, Quaternion.AngleAxis(45, Vector3.up), benchSlotsParent);
+                GameObject slotObject = Instantiate(benchSlotPrefab, position, Quaternion.AngleAxis(45, Vector3.up), this.transform);
                 slotObject.transform.localPosition = position;
                 BenchSlot benchSlot = slotObject.GetComponent<BenchSlot>();
                 if (benchSlot == null)
@@ -198,6 +181,12 @@ namespace TacticsArena.Battle
 
         internal void Initialize()
         {
+
+            benchSlots = this.GetComponentsInChildren<BenchSlot>();
+            if (benchSlots == null || benchSlots.Length == 0)
+            {
+                GenerateBenchSlots();
+            }
         }
 
         internal bool HasEmptySlot()
@@ -213,6 +202,14 @@ namespace TacticsArena.Battle
         internal void ClearBench()
         {
             throw new NotImplementedException();
+        }
+
+        internal Cell GetCell(int x, int y)
+        {
+            if (x < 0 || x >= maxBenchSize || y != 0)
+                return null; // Bench chỉ có một hàng
+            
+            return benchSlots[x];
         }
 
         // Event for UI updates

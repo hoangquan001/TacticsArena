@@ -21,32 +21,32 @@ namespace TacticsArena.Data
             switch (tier)
             {
                 case 1:
-                    champion.baseHealth = 100f;
-                    champion.baseAttackDamage = 50f;
+                    champion.baseAttr.health = 100f;
+                    champion.baseAttr.attackDamage = 50f;
                     break;
                 case 2:
-                    champion.baseHealth = 150f;
-                    champion.baseAttackDamage = 70f;
+                    champion.baseAttr.health = 150f;
+                    champion.baseAttr.attackDamage = 70f;
                     break;
                 case 3:
-                    champion.baseHealth = 200f;
-                    champion.baseAttackDamage = 90f;
+                    champion.baseAttr.health = 200f;
+                    champion.baseAttr.attackDamage = 90f;
                     break;
                 case 4:
-                    champion.baseHealth = 300f;
-                    champion.baseAttackDamage = 120f;
+                    champion.baseAttr.health = 300f;
+                    champion.baseAttr.attackDamage = 120f;
                     break;
                 case 5:
-                    champion.baseHealth = 500f;
-                    champion.baseAttackDamage = 180f;
+                    champion.baseAttr.health = 500f;
+                    champion.baseAttr.attackDamage = 180f;
                     break;
             }
-            
-            champion.baseAttackSpeed = 1f;
-            champion.baseArmor = 10f + (tier * 5);
-            champion.baseMagicResist = 10f + (tier * 5);
-            champion.maxMana = 100f;
-            
+
+            champion.baseAttr.attackSpeed = 1f;
+            champion.baseAttr.armor = 10f + (tier * 5);
+            champion.baseAttr.magicResist = 10f + (tier * 5);
+            champion.baseAttr.maxMana = 100f;
+
             return champion;
         }
         

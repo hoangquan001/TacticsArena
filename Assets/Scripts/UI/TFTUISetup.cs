@@ -25,7 +25,6 @@ namespace TacticsArena.UI
         public bool forceResolution = false;
         
         private UIDocument uiDocument;
-        private TFTMainUIController mainController;
         
         private void Start()
         {
@@ -40,7 +39,6 @@ namespace TacticsArena.UI
         {
             SetupResolution();
             SetupUIDocument();
-            SetupMainController();
             ApplyCustomizations();
             
             Debug.Log("✅ TFT UI System setup completed successfully!");
@@ -111,24 +109,7 @@ namespace TacticsArena.UI
             }
         }
         
-        private void SetupMainController()
-        {
-            // Get or create main controller
-            mainController = GetComponent<TFTMainUIController>();
-            if (mainController == null)
-            {
-                mainController = gameObject.AddComponent<TFTMainUIController>();
-            }
-            
-            // Configure controller settings
-            mainController.mainUIDocument = uiDocument;
-            mainController.mainUITemplate = mainUITemplate;
-            mainController.enableTooltips = enableTooltips;
-            mainController.enableAnimations = enableAnimations;
-            
-            Debug.Log("🎮 Main UI controller configured");
-        }
-        
+
         private void ApplyCustomizations()
         {
             if (uiDocument?.rootVisualElement == null) return;
@@ -418,11 +399,7 @@ namespace TacticsArena.UI
                 Debug.LogWarning("⚠️ Main UI stylesheet not assigned");
             }
             
-            // Check main controller
-            if (mainController == null)
-            {
-                Debug.LogWarning("⚠️ Main UI controller not found");
-            }
+
             
             // Check resolution
             if (Screen.width != targetResolution.x || Screen.height != targetResolution.y)
@@ -451,23 +428,6 @@ namespace TacticsArena.UI
         
         #region Public API
         
-        public void EnableTooltips(bool enable)
-        {
-            enableTooltips = enable;
-            if (mainController != null)
-            {
-                mainController.enableTooltips = enable;
-            }
-        }
-        
-        public void EnableAnimations(bool enable)
-        {
-            enableAnimations = enable;
-            if (mainController != null)
-            {
-                mainController.enableAnimations = enable;
-            }
-        }
         
         public void SetResolution(int width, int height)
         {

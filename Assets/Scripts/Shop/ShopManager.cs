@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TacticsArena.Champions;
+using TacticsArena.Core;
 
 namespace TacticsArena.Shop
 {
@@ -34,7 +35,8 @@ namespace TacticsArena.Shop
             {6, new int[] {25, 40, 30, 5, 0}},
             {7, new int[] {19, 30, 35, 15, 1}},
             {8, new int[] {18, 25, 32, 22, 3}},
-            {9, new int[] {10, 15, 25, 40, 10}}
+            {9, new int[] {10, 15, 25, 40, 10}},
+            {10, new int[] {5, 10, 15, 30, 40}}
         };
         
         private void Start()
@@ -93,7 +95,7 @@ namespace TacticsArena.Shop
             return null;
         }
         
-        public bool BuyChampion(ChampionData championData, Core.Player player)
+        public bool BuyChampion(ChampionData championData, Player player)
         {
             if (!currentShop.Contains(championData))
                 return false;
@@ -102,7 +104,8 @@ namespace TacticsArena.Shop
                 return false;
             
             // Remove from shop
-            currentShop.Remove(championData);
+            int index = currentShop.IndexOf(championData);
+            currentShop[index] = null; // Mark as null to remove later
             
             // Add to player's bench via event
             ChampionPurchasedEvent?.Invoke(championData);
@@ -112,7 +115,7 @@ namespace TacticsArena.Shop
             return true;
         }
         
-        public bool RefreshShopWithCost(Core.Player player)
+        public bool RefreshShopWithCost(Player player)
         {
             if (!player.SpendGold(refreshCost))
                 return false;

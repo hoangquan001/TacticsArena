@@ -59,10 +59,10 @@ namespace TacticsArena.Synergies
             // Count champions by class and origin
             foreach (Champion champion in champions)
             {
-                if (champion.championData == null) continue;
+                if (champion.data == null) continue;
                 
                 // Count classes
-                foreach (ChampionClass championClass in champion.championData.classes)
+                foreach (ChampionClass championClass in champion.data.classes)
                 {
                     if (!classCounts.ContainsKey(championClass))
                         classCounts[championClass] = 0;
@@ -70,7 +70,7 @@ namespace TacticsArena.Synergies
                 }
                 
                 // Count origins
-                foreach (ChampionOrigin origin in champion.championData.origins)
+                foreach (ChampionOrigin origin in champion.data.origins)
                 {
                     if (!originCounts.ContainsKey(origin))
                         originCounts[origin] = 0;
@@ -129,16 +129,12 @@ namespace TacticsArena.Synergies
             {
                 if (bonus.bonusDescription.Contains("Attack"))
                 {
-                    champion.attackDamage *= (1 + bonus.bonusValue);
+                    champion.data.baseAttr.attackDamage *= (1 + bonus.bonusValue);
                 }
-                else if (bonus.bonusDescription.Contains("Health"))
-                {
-                    champion.maxHealth *= (1 + bonus.bonusValue);
-                    champion.currentHealth = champion.maxHealth;
-                }
+              
                 else if (bonus.bonusDescription.Contains("Speed"))
                 {
-                    champion.attackSpeed *= (1 + bonus.bonusValue);
+                    champion.data.baseAttr.attackSpeed *= (1 + bonus.bonusValue);
                 }
             }
         }

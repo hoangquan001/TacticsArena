@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3acee699359fb40931db4f16c57f2a, type: 3}
+  m_Name: Mutant
+  m_EditorClassIdentifier: 
+  championName: 
+  championIcon: {fileID: 0}
+  championPrefab: {fileID: 919132149155446097, guid: 336279fd05e69e445be7f506facec618, type: 3}
+  cost: 1
+  tier: 1
+  classes: 
+  origins: 
+  baseHealth: 100
+  baseAttackDamage: 50
+  baseAttackSpeed: 1
+  baseArmor: 10
+  baseMagicResist: 10
+  baseMana: 100
+  maxMana: 100
+  abilityName: 
+  abilityDescription: 
+  abilityDamage: 100
+  abilityCooldown: 3
