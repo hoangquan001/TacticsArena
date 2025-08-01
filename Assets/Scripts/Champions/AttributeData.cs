@@ -10,6 +10,8 @@ namespace TacticsArena.Champions
         public float armor;
         public float magicResist;
         public float maxMana;
+        public int range; // Placeholder for range, can be used in future expansions
+
 
         public static AttributeData operator +(AttributeData a, AttributeData b)
         {
@@ -20,7 +22,9 @@ namespace TacticsArena.Champions
                 attackSpeed = a.attackSpeed + b.attackSpeed,
                 armor = a.armor + b.armor,
                 magicResist = a.magicResist + b.magicResist,
-                maxMana = a.maxMana + b.maxMana
+                maxMana = a.maxMana + b.maxMana,
+                range = a.range + b.range
+
             };
         }
     }

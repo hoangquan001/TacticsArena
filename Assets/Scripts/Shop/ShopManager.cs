@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using TacticsArena.Champions;
 using TacticsArena.Core;
+using UnityEditor;
+using System.Linq;
 
 namespace TacticsArena.Shop
 {
@@ -123,7 +125,19 @@ namespace TacticsArena.Shop
             RefreshShop();
             return true;
         }
-        
+
+        [ContextMenu("Load Champion Pool")]
+        public void LoadChampionPool()
+        {
+            allChampions.Clear();
+            var champions = AssetDatabase.FindAssets("t:ChampionData", new[] { "Assets/Data/Champions" })
+                .Select(guid => AssetDatabase.LoadAssetAtPath<ChampionData>(AssetDatabase.GUIDToAssetPath(guid)))
+                .Where(data => data != null)
+                .OfType<ChampionData>()
+                .ToList();
+            allChampions.AddRange(champions);
+        }
+
         // Events for UI
         public static System.Action<List<ChampionData>> ShopRefreshedEvent;
         public static System.Action<ChampionData> ChampionPurchasedEvent;

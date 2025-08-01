@@ -325,7 +325,7 @@ namespace TacticsArena.Champions
             {
                 animator = championObject.AddComponent<Animator>();
             }
-
+            animator.applyRootMotion = false;
             // Set animator controller
             RuntimeAnimatorController controllerToUse = spawnData.animatorController ?? defaultAnimatorController;
             if (controllerToUse != null)
@@ -379,8 +379,6 @@ namespace TacticsArena.Champions
             // Apply team colors
             ApplyTeamColors(champion, spawnData.teamId);
 
-            // Apply star effects (visual indicators for star level)
-            ApplyStarEffects(champion, spawnData.stars);
 
             // Apply level scaling if needed
             ApplyLevelScaling(champion, spawnData.level);
@@ -402,31 +400,6 @@ namespace TacticsArena.Champions
             }
         }
 
-        private void ApplyStarEffects(Champion champion, int stars)
-        {
-            // Add visual effects based on star level
-            Transform effectParent = champion.transform.Find("StarEffects");
-            if (effectParent == null)
-            {
-                GameObject effectObject = new GameObject("StarEffects");
-                effectObject.transform.SetParent(champion.transform);
-                effectObject.transform.localPosition = Vector3.up * 2.5f;
-                effectParent = effectObject.transform;
-            }
-
-            // Create star particle effects or UI indicators
-            for (int i = 0; i < stars; i++)
-            {
-                GameObject star = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                star.transform.SetParent(effectParent);
-                star.transform.localPosition = new Vector3((i - 1) * 0.3f, 0, 0);
-                star.transform.localScale = Vector3.one * 0.1f;
-
-                Renderer starRenderer = star.GetComponent<Renderer>();
-                starRenderer.material.color = Color.yellow;
-                starRenderer.material.SetFloat("_Metallic", 0.8f);
-            }
-        }
 
         private void ApplyLevelScaling(Champion champion, int level)
         {

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TacticsArena.Core;
 using TacticsArena.UI;
+using UnityEditor;
 
 namespace TacticsArena.Battle
 {
@@ -16,40 +17,41 @@ namespace TacticsArena.Battle
         SkillAttacking,
         Dead
     }
+    [CustomEditor(typeof(Champion))]
+    public class ChampionInspector : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            Champion champion = (Champion)target;
+
+            if (GUILayout.Button("Reset Stats"))
+            {
+                champion.SetAnimatorTrigger("Attack");
+            }
+        }
+    }
 
     public class Champion : MonoBehaviour
     {
-        [Header("Team Info")]
         public int teamId = 0; // 0 = player, 1 = enemy
         public PlayerArea ownerArea;
-
-        [Header("Data & Level")]
         public ChampionData data;
         public int level = 1;
         public int stars = 1;
-
-        [Header("Combat Stats")]
         public float currentHealth;
         public float currentMana;
         public bool isAlive = true;
         public Champion currentTarget;
-
-        [Header("State Management")]
         public ChampionState currentState = ChampionState.Idle;
-        
-        [Header("Animation")]
-        public string idleAnimName = "Idle";
-        public string moveAnimName = "Move";
-        public string attackAnimName = "Attack";
-        public string skillAnimName = "Skill";
-        public string deathAnimName = "Death";
 
         [Header("Config")]
         public float attackRange = 1.5f;
         public float moveSpeed = 2f;
         public float attackCooldown = 1f;
         public float skillCooldown = 5f;
-        
+
         private Animator _animator;
         private Coroutine attackCoroutine;
         private Coroutine moveCoroutine;
@@ -57,7 +59,11 @@ namespace TacticsArena.Battle
         private float lastAttackTime;
         private float lastSkillTime;
         private Vector3 homePosition;
-
+        private string idleAnimName = "Idle";
+        private string moveAnimName = "Move";
+        private string attackAnimName = "Attack";
+        private string skillAnimName = "Skill";
+        private string deathAnimName = "Death";
         private AttributeManager attributes;
 
         private void Start()
@@ -78,15 +84,16 @@ namespace TacticsArena.Battle
             currentHealth = data.baseAttr.health;
             currentMana = 0f;
             isAlive = true;
-            
+
             // Setup animator parameters
             SetupAnimatorParameters();
+            SetupAnimatorOverrides();
         }
-        
+
         private void SetupAnimatorParameters()
         {
             if (_animator == null) return;
-            
+
             // Ensure animator has required parameters
             // These should match your Animator Controller parameters
             if (!HasParameter("State"))
@@ -100,11 +107,11 @@ namespace TacticsArena.Battle
             if (!HasParameter("Death"))
                 Debug.LogWarning($"Animator missing 'Death' trigger for {gameObject.name}");
         }
-        
+
         private bool HasParameter(string paramName)
         {
             if (_animator == null) return false;
-            
+
             foreach (AnimatorControllerParameter param in _animator.parameters)
             {
                 if (param.name == paramName)
@@ -112,24 +119,24 @@ namespace TacticsArena.Battle
             }
             return false;
         }
-        
+
         public void ChangeState(ChampionState newState)
         {
             if (currentState == newState) return;
-            
+
             // Exit current state
             ExitState(currentState);
-            
+
             // Change state
             ChampionState previousState = currentState;
             currentState = newState;
-            
+
             // Enter new state
             EnterState(newState, previousState);
-            
-            Debug.Log($"{data?.championName ?? gameObject.name} changed state from {previousState} to {newState}");
+
+            Debug.Log(message: $"{data?.championName ?? gameObject.name} changed state from {previousState} to {newState}");
         }
-        
+
         private void EnterState(ChampionState state, ChampionState previousState)
         {
             switch (state)
@@ -151,7 +158,7 @@ namespace TacticsArena.Battle
                     break;
             }
         }
-        
+
         private void ExitState(ChampionState state)
         {
             // Stop any running coroutines for the current state
@@ -160,7 +167,7 @@ namespace TacticsArena.Battle
                 StopCoroutine(stateCoroutine);
                 stateCoroutine = null;
             }
-            
+
             switch (state)
             {
                 case ChampionState.Moving:
@@ -174,58 +181,58 @@ namespace TacticsArena.Battle
                     break;
             }
         }
-        
+
         #region State Handlers
-        
+
         private void EnterIdleState()
         {
             PlayAnimation(idleAnimName);
             SetAnimatorBool("IsMoving", false);
             SetAnimatorInt("State", 0); // Idle = 0
         }
-        
+
         private void EnterMovingState()
         {
             PlayAnimation(moveAnimName);
             SetAnimatorBool("IsMoving", true);
             SetAnimatorInt("State", 1); // Moving = 1
         }
-        
+
         private void ExitMovingState()
         {
             SetAnimatorBool("IsMoving", false);
         }
-        
+
         private void EnterNormalAttackState()
         {
             SetAnimatorInt("State", 2); // Attack = 2
             SetAnimatorTrigger("Attack");
             stateCoroutine = StartCoroutine(NormalAttackCoroutine());
         }
-        
+
         private void ExitNormalAttackState()
         {
             // Attack exit is handled by coroutine completion
         }
-        
+
         private void EnterSkillAttackState()
         {
             SetAnimatorInt("State", 3); // Skill = 3
             SetAnimatorTrigger("Skill");
             stateCoroutine = StartCoroutine(SkillAttackCoroutine());
         }
-        
+
         private void ExitSkillAttackState()
         {
             // Skill exit is handled by coroutine completion
         }
-        
+
         private void EnterDeadState()
         {
             SetAnimatorInt("State", 4); // Dead = 4
             SetAnimatorTrigger("Death");
             PlayAnimation(deathAnimName);
-            
+
             // Stop all other coroutines
             if (attackCoroutine != null)
             {
@@ -238,19 +245,50 @@ namespace TacticsArena.Battle
                 moveCoroutine = null;
             }
         }
-        
+
         #endregion
-        
+
         #region Animation Helpers
-        
-        private void PlayAnimation(string animationName)
+        private void SetupAnimatorOverrides()
+        {
+            if (_animator == null || data == null) return;
+            // Override animations based on ChampionData
+            // OverrideAnimation("Idle", data.animations.idleAnimation);
+            // OverrideAnimation("Move", data.animations.moveAnimation);
+            // OverrideAnimation("Attack", data.animations.attackAnimation);
+            // OverrideAnimation("Skill", data.animations.abilityAnimation);
+            // OverrideAnimation("Death", data.animations.deathAnimation);
+            OverrideAnimations();
+        }
+        private void OverrideAnimations()
+        {
+            var overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+
+            foreach (var clip in overrideController.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name == idleAnimName && data.animations.idleAnimation != null)
+                    overrideController[clip] = data.animations.idleAnimation;
+                else if (clip.name == moveAnimName && data.animations.moveAnimation != null)
+                    overrideController[clip] = data.animations.moveAnimation;
+                else if (clip.name == attackAnimName && data.animations.attackAnimation != null)
+                    overrideController[clip] = data.animations.attackAnimation;
+                else if (clip.name == skillAnimName && data.animations.abilityAnimation != null)
+                    overrideController[clip] = data.animations.abilityAnimation;
+                else if (clip.name == deathAnimName && data.animations.deathAnimation != null)
+                    overrideController[clip] = data.animations.deathAnimation;
+            }
+
+            _animator.runtimeAnimatorController = overrideController;
+        }
+
+        public void PlayAnimation(string animationName)
         {
             if (_animator != null && !string.IsNullOrEmpty(animationName))
             {
                 _animator.Play(animationName);
             }
         }
-        
+
         private void SetAnimatorInt(string paramName, int value)
         {
             if (_animator != null && HasParameter(paramName))
@@ -258,7 +296,7 @@ namespace TacticsArena.Battle
                 _animator.SetInteger(paramName, value);
             }
         }
-        
+
         private void SetAnimatorBool(string paramName, bool value)
         {
             if (_animator != null && HasParameter(paramName))
@@ -266,19 +304,19 @@ namespace TacticsArena.Battle
                 _animator.SetBool(paramName, value);
             }
         }
-        
-        private void SetAnimatorTrigger(string paramName)
+
+        public void SetAnimatorTrigger(string paramName)
         {
             if (_animator != null && HasParameter(paramName))
             {
                 _animator.SetTrigger(paramName);
             }
         }
-        
+
         #endregion
-        
+
         #region Attack Coroutines
-        
+
         private IEnumerator NormalAttackCoroutine()
         {
             if (currentTarget == null || !currentTarget.isAlive)
@@ -286,19 +324,19 @@ namespace TacticsArena.Battle
                 ChangeState(ChampionState.Idle);
                 yield break;
             }
-            
+
             // Wait for animation to reach attack point (usually mid-animation)
             yield return new WaitForSeconds(0.3f);
-            
+
             // Perform the actual attack
             PerformNormalAttack(currentTarget);
-            
+
             // Wait for attack animation to complete
             yield return new WaitForSeconds(0.7f);
-            
+
             // Update last attack time
             lastAttackTime = Time.time;
-            
+
             // Return to idle or continue combat
             if (currentTarget != null && currentTarget.isAlive)
             {
@@ -309,7 +347,7 @@ namespace TacticsArena.Battle
                 ChangeState(ChampionState.Idle);
             }
         }
-        
+
         private IEnumerator SkillAttackCoroutine()
         {
             if (currentTarget == null || !currentTarget.isAlive)
@@ -317,46 +355,26 @@ namespace TacticsArena.Battle
                 ChangeState(ChampionState.Idle);
                 yield break;
             }
-            
+
             Debug.Log($"{data?.championName} is casting skill!");
-            
+
             // Wait for skill animation to reach cast point
             yield return new WaitForSeconds(0.5f);
-            
+
             // Perform the skill attack
             PerformSkillAttack(currentTarget);
-            
+
             // Wait for skill animation to complete
             yield return new WaitForSeconds(1f);
-            
+
             // Update last skill time
             lastSkillTime = Time.time;
-            
+
             // Return to idle
             ChangeState(ChampionState.Idle);
         }
-        
+
         #endregion
-
-        private void OverrideAnimation(string state, AnimationClip newClip)
-        {
-            var overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
-            // Get all overrides
-            var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
-            overrideController.GetOverrides(overrides);
-
-            for (int i = 0; i < overrides.Count; i++)
-            {
-                if (overrides[i].Key.name == state)
-                {
-                    overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(overrides[i].Key, newClip);
-                }
-            }
-
-            overrideController.ApplyOverrides(overrides);
-            _animator.runtimeAnimatorController = overrideController;
-
-        }
 
         private float GetStarMultiplier()
         {
@@ -381,7 +399,7 @@ namespace TacticsArena.Battle
             while (isAlive && currentHealth > 0)
             {
                 // Wait if currently in an action state
-                if (currentState == ChampionState.NormalAttacking || 
+                if (currentState == ChampionState.NormalAttacking ||
                     currentState == ChampionState.SkillAttacking ||
                     currentState == ChampionState.Dead)
                 {
@@ -395,7 +413,7 @@ namespace TacticsArena.Battle
                 if (currentTarget != null)
                 {
                     float distanceToTarget = Vector3.Distance(transform.position, currentTarget.transform.position);
-                    
+
                     // Move to target if too far
                     if (distanceToTarget > attackRange)
                     {
@@ -448,46 +466,46 @@ namespace TacticsArena.Battle
                 }
             }
         }
-        
+
         #region Combat Helpers
-        
+
         private bool CanAttack()
         {
             return Time.time >= lastAttackTime + attackCooldown;
         }
-        
+
         private bool CanUseSkill()
         {
-            return currentMana >= data.baseAttr.maxMana && 
+            return currentMana >= data.baseAttr.maxMana &&
                    Time.time >= lastSkillTime + skillCooldown;
         }
-        
+
         private void PerformNormalAttack(Champion target)
         {
             if (target == null || !target.isAlive) return;
 
             float damage = CalculateDamage(data.baseAttr.attackDamage, target.data.baseAttr.armor);
             target.TakeDamage(damage);
-            
+
             // Add mana for attacking
             AddManaAmount(10f);
 
             Debug.Log($"{data.championName} attacks {target.data.championName} for {damage} damage");
         }
-        
+
         private void PerformSkillAttack(Champion target)
         {
             if (target == null || !target.isAlive || data.abilityData == null) return;
 
             float skillDamage = data.abilityData.damage;
             target.TakeDamage(skillDamage);
-            
+
             // Reset mana after using skill
             currentMana = 0f;
 
             Debug.Log($"{data.championName} uses skill on {target.data.championName} for {skillDamage} damage!");
         }
-        
+
         #endregion
 
         private Champion FindNearestEnemy()
@@ -521,7 +539,7 @@ namespace TacticsArena.Battle
 
         private IEnumerator MoveToTarget(Champion target)
         {
-            while (target != null && target.isAlive && 
+            while (target != null && target.isAlive &&
                    Vector3.Distance(transform.position, target.transform.position) > attackRange)
             {
                 // Stop moving if we're not in moving state anymore
@@ -529,19 +547,19 @@ namespace TacticsArena.Battle
                 {
                     break;
                 }
-                
+
                 Vector3 direction = (target.transform.position - transform.position).normalized;
                 transform.position += direction * moveSpeed * Time.deltaTime;
-                
+
                 // Face the target
                 if (direction != Vector3.zero)
                 {
                     transform.rotation = Quaternion.LookRotation(direction);
                 }
-                
+
                 yield return null;
             }
-            
+
             // Finished moving, go to idle if still in moving state
             if (currentState == ChampionState.Moving)
             {
@@ -569,7 +587,7 @@ namespace TacticsArena.Battle
         public void TakeDamage(float damage, bool isCritical = false)
         {
             if (!isAlive || currentState == ChampionState.Dead) return;
-            
+
             currentHealth -= damage;
 
             if (currentHealth <= 0)
@@ -577,54 +595,54 @@ namespace TacticsArena.Battle
                 currentHealth = 0;
                 Die();
             }
-            
+
             // Trigger HUD update event
             OnHealthChanged?.Invoke(currentHealth);
-            
+
             // Debug log for now (can be replaced with floating text later)
             Debug.Log($"{data?.championName ?? gameObject.name} took {damage} damage{(isCritical ? " (CRITICAL)" : "")}");
         }
-        
+
         public void Heal(float healAmount)
         {
             if (!isAlive || currentState == ChampionState.Dead) return;
-            
+
             float maxHealth = data != null ? data.baseAttr.health : 100f;
             float actualHeal = Mathf.Min(healAmount, maxHealth - currentHealth);
-            
+
             if (actualHeal > 0)
             {
                 currentHealth += actualHeal;
-                
+
                 // Trigger HUD update event
                 OnHealthChanged?.Invoke(currentHealth);
-                
+
                 // Debug log for now (can be replaced with floating text later)
                 Debug.Log($"{data?.championName ?? gameObject.name} healed {actualHeal} HP");
             }
         }
-        
+
         public void AddManaAmount(float manaAmount)
         {
             if (!isAlive || currentState == ChampionState.Dead) return;
-            
+
             float maxMana = data != null ? data.baseAttr.maxMana : 100f;
             currentMana = Mathf.Min(currentMana + manaAmount, maxMana);
-            
+
             // Trigger HUD update event
             OnManaChanged?.Invoke(currentMana);
         }
-        
+
         public void SpendMana(float manaAmount)
         {
             if (!isAlive || currentState == ChampionState.Dead) return;
-            
+
             currentMana = Mathf.Max(0, currentMana - manaAmount);
-            
+
             // Trigger HUD update event
             OnManaChanged?.Invoke(currentMana);
         }
-        
+
         // Events for HUD updates
         public System.Action<float> OnHealthChanged;
         public System.Action<float> OnManaChanged;
@@ -632,7 +650,7 @@ namespace TacticsArena.Battle
         private void Die()
         {
             if (!isAlive) return; // Prevent multiple death calls
-            
+
             isAlive = false;
             ChangeState(ChampionState.Dead);
 
@@ -644,16 +662,16 @@ namespace TacticsArena.Battle
                 StopCoroutine(attackCoroutine);
                 attackCoroutine = null;
             }
-            
+
             // Disable after death animation (optional)
             StartCoroutine(DisableAfterDeath());
         }
-        
+
         private IEnumerator DisableAfterDeath()
         {
             // Wait for death animation to play
             yield return new WaitForSeconds(2f);
-            
+
             // Optionally disable the gameobject or just keep it inactive
             // gameObject.SetActive(false);
         }
@@ -661,9 +679,9 @@ namespace TacticsArena.Battle
         private void AddMana(float amount)
         {
             if (!isAlive || currentState == ChampionState.Dead) return;
-            
+
             currentMana += amount;
-            
+
             // Clamp mana to max value
             if (currentMana > data.baseAttr.maxMana)
             {
@@ -672,7 +690,7 @@ namespace TacticsArena.Battle
         }
 
         #region Public Interface Methods
-        
+
         public void ForceIdle()
         {
             if (isAlive && currentState != ChampionState.Dead)
@@ -680,7 +698,7 @@ namespace TacticsArena.Battle
                 ChangeState(ChampionState.Idle);
             }
         }
-        
+
         public void StopBattle()
         {
             if (attackCoroutine != null)
@@ -688,44 +706,44 @@ namespace TacticsArena.Battle
                 StopCoroutine(attackCoroutine);
                 attackCoroutine = null;
             }
-            
+
             ForceIdle();
         }
-        
+
         public bool IsInCombat()
         {
-            return currentState == ChampionState.NormalAttacking || 
+            return currentState == ChampionState.NormalAttacking ||
                    currentState == ChampionState.SkillAttacking ||
                    currentState == ChampionState.Moving;
         }
-        
+
         public float GetHealthPercentage()
         {
             if (data == null) return 0f;
             return currentHealth / data.baseAttr.health;
         }
-        
+
         public float GetManaPercentage()
         {
             if (data == null) return 0f;
             return currentMana / data.baseAttr.maxMana;
         }
-        
+
         #endregion
 
         internal void EndBattle()
         {
             StopBattle();
-            
+
             // Reset position to home if needed
             if (homePosition != Vector3.zero)
             {
                 transform.position = homePosition;
             }
-            
+
             // Reset some combat stats
             currentTarget = null;
-            
+
             Debug.Log($"{data?.championName ?? gameObject.name} ended battle");
         }
 

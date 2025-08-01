@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3acee699359fb40931db4f16c57f2a, type: 3}
+  m_Name: Mage_03
+  m_EditorClassIdentifier: 
+  championName: Mage_03
+  championIcon: {fileID: 0}
+  championPrefab: {fileID: 5771382443236846731, guid: 83ed4b92a8168d148b0f30fdc34a0ba7, type: 3}
+  cost: 2
+  tier: 2
+  classes: 01000000
+  origins: 04000000
+  baseAttr:
+    health: 133.9
+    attackDamage: 32.5
+    attackSpeed: 1.0978572
+    armor: 9.099999
+    magicResist: 37.699997
+    maxMana: 188
+    range: 0
+  abilityData: {fileID: 0}
+  animations:
+    idleAnimation: {fileID: 7400000, guid: 612109343b97b734f8645712f104a31d, type: 2}
+    moveAnimation: {fileID: 7400000, guid: 874d5ea75d1b09d49898f663541386fa, type: 2}
+    attackAnimation: {fileID: 7400000, guid: e7ddf512c9ca90340b7f47f827763bb3, type: 2}
+    abilityAnimation: {fileID: 0}
+    deathAnimation: {fileID: 7400000, guid: 524555ab26befa244a3db8dd5b212b79, type: 2}
